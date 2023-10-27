@@ -2,7 +2,7 @@ import './App.css';
 import { Auth } from "./components/auth"
 import { db } from "./config/firebase"
 import { useState, useEffect } from "react"
-import { getDocs, collection, addDoc, deleteDoc, doc } from "firebase/firestore"
+import { getDocs, collection, addDoc, deleteDoc, doc, updateDoc } from "firebase/firestore"
 
 function App() {
   const [movieList, setMovieList] = useState([]);
@@ -56,7 +56,7 @@ function App() {
 
   const updateMovieTitle = async (id, ) => {
     const movieDoc = doc(db, "movies", id);
-    await deleteDoc(movieDoc);
+    await updateDoc(movieDoc, {title: updatedTitle});
   };
 
   return (
