@@ -82,7 +82,7 @@ function App() {
             <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
 
             <input placeholder='new title...' onChange={(e) => setUpdatedTitle(e.target.value)}/>
-            <button>Update Title</button>
+            <button onClick={(() => updateMovieTitle(movie.id))}>Update Title</button>
           </div>
         ))}
       </div>
