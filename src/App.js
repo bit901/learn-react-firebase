@@ -12,6 +12,9 @@ function App() {
   const [newReleaseDate, setNewReleaseDate] = useState(0)
   const [isNewMovieOscar, setisNewMovieOscar] = useState(false)
 
+  // update title state
+  const [updatedTitle, setUpdatedTitle] = useState("")
+
   const moviesCollectionReference = collection(db, "movies");
 
   const getMovieList = async () => {
@@ -51,6 +54,11 @@ function App() {
       await deleteDoc(movieDoc);
   };
 
+  const updateMovieTitle = async (id, ) => {
+    const movieDoc = doc(db, "movies", id);
+    await deleteDoc(movieDoc);
+  };
+
   return (
     <div className="App">
       <Auth />
@@ -73,7 +81,7 @@ function App() {
 
             <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
 
-            <input placeholder='new title...'/>
+            <input placeholder='new title...' onChange={(e) => setUpdatedTitle(e.target.value)}/>
             <button>Update Title</button>
           </div>
         ))}
