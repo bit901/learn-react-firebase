@@ -2,7 +2,7 @@ import './App.css';
 import { Auth } from "./components/auth"
 import { db } from "./config/firebase"
 import { useState, useEffect } from "react"
-import { getDocs, collection, addDoc } from "firebase/firestore"
+import { getDocs, collection, addDoc, deleteDoc, doc } from "firebase/firestore"
 
 function App() {
   const [movieList, setMovieList] = useState([]);
@@ -14,24 +14,24 @@ function App() {
 
   const moviesCollectionReference = collection(db, "movies");
 
+  const getMovieList = async () => {
+    // read data
+
+    // set movie list
+    try {
+      const data = await getDocs(moviesCollectionReference);
+      const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id}));
+      console.log(filteredData)
+      setMovieList(filteredData)
+    } catch (err) {
+      console.error(err);
+    }
+
+  };
+
   
   useEffect(() => {
-    const getMovieList = async () => {
-      // read data
-
-      // set movie list
-      try {
-        const data = await getDocs(moviesCollectionReference);
-        const filteredData = data.docs.map((doc) => ({...doc.data(), id: doc.id}));
-        console.log(filteredData)
-        setMovieList(filteredData)
-      } catch (err) {
-        console.error(err);
-      }
-
-    };
     getMovieList();
-    
   }, []);
 
   const onSubmitMovie = async () => {
@@ -46,6 +46,10 @@ function App() {
   }
   };
   
+  const deleteMovie = async (id) => {
+      const movieDoc = doc(db, "movies", id)
+      await deleteDoc(movieDoc);
+  };
 
   return (
     <div className="App">
@@ -64,8 +68,13 @@ function App() {
       <div>
         {movieList.map((movie) => (
           <div>
-            <h1>{movie.title}</h1>
+            <h1 style={{color: movie.receivedAnOscar ? "green" : "red"}}>{movie.title}</h1>
             <p>Date: {movie.releaseDate} </p>
+
+            <button onClick={() => deleteMovie(movie.id)}>Delete Movie</button>
+
+            <input placeholder='new title...'/>
+            <button>Update Title</button>
           </div>
         ))}
       </div>
